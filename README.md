@@ -3,7 +3,7 @@
 A scroll-told film about a man who falls in love and fades away, until he's Mr. Nobody.
 Written & directed by Abraham Naiborhu. Lives at **https://abrahamnaiborhu.com/a-love-story/**.
 
-This is the **private source repository**. Pushing to `main` publishes: the Publish workflow builds the film, checks that nothing private is in the build, and pushes only the build to the separate public repository that GitHub Pages serves. See [docs/DEPLOY.md](docs/DEPLOY.md).
+Pushing to `main` publishes: the Publish workflow builds the film, checks that no notes or prompts slipped into the build, and hands only the build to GitHub Pages. See [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ## Commands
 

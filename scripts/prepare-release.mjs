@@ -1,4 +1,4 @@
-// Prepares the folder that gets published to the public GitHub Pages repository (see docs/DEPLOY.md).
+// Prepares the folder that GitHub Pages serves (see docs/DEPLOY.md).
 // Run with `npm run release`, which builds first; the Publish workflow runs it on every push to main. Copies dist/ to release/a-love-story/, adds .nojekyll,
 // and refuses to finish if anything private slipped into the build: prompts, internal notes, local paths,
 // source maps, key-like strings, or a page that isn't built for the /a-love-story/ address.

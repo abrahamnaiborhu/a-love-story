@@ -1,28 +1,27 @@
-# Publishes the film whenever main changes (see docs/DEPLOY.md).
-# This repository stays private. Only the checked build is pushed to the public site repository,
-# <owner>/a-love-story, which GitHub Pages serves at abrahamnaiborhu.com/a-love-story/.
+# Builds the film and publishes it with GitHub Pages whenever main changes (see docs/DEPLOY.md).
+# Pages serves only the checked build (release/a-love-story/) at abrahamnaiborhu.com/a-love-story/.
 name: Publish
 
 on:
   push:
     branches: [main]
     paths-ignore: ['docs/**', 'studies/**', '**/*.md'] # notes and studies don't change the film
+  pull_request:
+    branches: [main]
   workflow_dispatch: # "Run workflow" on the Actions tab publishes on demand
-
-# One publish at a time; a newer push waits for the running one rather than cutting it off mid-push.
-concurrency:
-  group: publish
-  cancel-in-progress: false
 
 permissions:
   contents: read
 
+# One publish at a time; a newer push waits for the running one rather than cutting it off.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    env:
-      SITE_REPOSITORY: ${{ github.repository_owner }}/a-love-story
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -36,36 +35,25 @@ jobs:
       - run: npm ci
       - run: npm run lint
 
-      # Builds for /a-love-story/ and stops if anything private slipped into the build.
+      # Builds for /a-love-story/ and stops if prompts, notes, local paths or source maps slipped into the build.
       - run: npm run release
 
-      - name: Push the build to the site repository
-        env:
-          DEPLOY_KEY: ${{ secrets.SITE_DEPLOY_KEY }}
-        run: |
-          if [ -z "$DEPLOY_KEY" ]; then
-            echo "::error::The SITE_DEPLOY_KEY secret is missing (docs/DEPLOY.md, one-time setup, step 3)."
-            exit 1
-          fi
-          mkdir -p ~/.ssh
-          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/site_key
-          chmod 600 ~/.ssh/site_key
-          # GitHub's SSH host keys, fetched from GitHub itself over HTTPS.
-          curl -fsSL https://api.github.com/meta | jq -r '.ssh_keys[] | "github.com " + .' > ~/.ssh/known_hosts
-          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/site_key -o IdentitiesOnly=yes"
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        if: github.event_name != 'pull_request'
+        with:
+          path: release/a-love-story
 
-          git clone --quiet "git@github.com:${SITE_REPOSITORY}.git" site
-          cd site
-          git symbolic-ref HEAD refs/heads/main # also right for a brand-new, empty repository
-          rsync -a --delete --exclude .git ../release/a-love-story/ ./
-          git add -A
-          if git diff --cached --quiet; then
-            echo "The published film is already up to date." | tee -a "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-          tag="release-$(date -u +%Y-%m-%d-%H%M)-${GITHUB_SHA::7}"
-          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-            commit --quiet -m "Release ${GITHUB_SHA::7}"
-          git tag "$tag"
-          git push --quiet origin HEAD:refs/heads/main "refs/tags/$tag"
-          echo "Published **$tag** to $SITE_REPOSITORY. GitHub Pages updates within a couple of minutes." >> "$GITHUB_STEP_SUMMARY"
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

@@ -1,7 +1,7 @@
-# A Love Story — PRIVATE source repository.
-# This repository keeps everything needed to rebuild the film: source, docs and prompts, the original
-# artwork in docs/creative/, the optimised images in src/assets/media/, studies and agent skills.
-# Only the reviewed build is ever published, from a separate public repository (see docs/DEPLOY.md).
+# A Love Story — public repository: everything committed here is readable by anyone.
+# It keeps everything needed to rebuild the film: source, docs and prompts, the original artwork in
+# docs/creative/, the optimised images in src/assets/media/, studies and agent skills.
+# GitHub Pages serves only the checked build, made by the Publish workflow (see docs/DEPLOY.md).
 
 # ---- Secrets: never commit ----
 .env
@@ -11,7 +11,6 @@
 *.key
 *.p12
 .npmrc
-a-love-story-deploy*
 
 # ---- Generated: rebuilt by npm, Vite or the release script ----
 node_modules

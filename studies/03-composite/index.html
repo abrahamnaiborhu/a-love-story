@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study 03 — Composite test</title>
+<!--
+  Throwaway study; see docs/PROJECT_SCRIPT.md, "Prototype agreement — Study 03".
+  The 02B umbrella opening with the real Codex photographs and the watercolour rose.
+  Reuses Study 02's engine. ?p=0.5 freezes the timeline; ?p=0&t=3000 freezes the opening.
+-->
+<link rel="stylesheet" href="../02-openings/shared.css">
+<style>
+  /* Film finish over the whole scene: moving grain and a vignette. */
+  .grain {
+    position: fixed; inset: -50%; z-index: 1; pointer-events: none; opacity: .16; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  .vignette { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 55%, transparent 50%, rgba(0, 0, 0, .55) 100%); }
+</style>
+</head>
+<body>
+<div class="hud bar"><i id="bar"></i></div>
+<header class="hud top"><span>Study 03 · Composite test · throwaway</span><span id="cap" aria-live="polite"></span></header>
+<p class="title" id="title" style="top: 9%"><small>Abraham Naiborhu presents</small><strong>A Love Story</strong></p>
+<div class="lines" id="openLines" style="top: 7%; bottom: auto">
+  <p class="line" data-in="0.06" data-out="0.44">It was raining.</p>
+  <p class="line" data-in="0.15" data-out="0.44">She had no umbrella.</p>
+  <p class="line" data-in="0.25" data-out="0.44">I had one.</p>
+</div>
+<div class="lines" id="fallLines" style="top: 11%; bottom: auto">
+  <p class="line" data-in="0.7">I fell.</p>
+  <p class="line" data-in="0.8">I kept falling.</p>
+</div>
+<p class="hud hint" id="hint" style="opacity: 0">Scroll, or press Play</p>
+<button class="hud" id="play" type="button" aria-pressed="false">Play</button>
+<div class="grain" id="grain"></div>
+<div class="vignette"></div>
+
+<div id="track">
+  <div id="stage">
+    <svg id="svg" role="img" aria-labelledby="svgTitle">
+      <title id="svgTitle">Night rain. A woman in a red coat stands without an umbrella. A man walks in and holds his clear umbrella over her, leaving his own side in the rain. Rain runs down the umbrella into one blue drop, which falls through opening flowers toward a watercolour red rose.</title>
+      <defs>
+        <!-- The city is out of focus, like a long lens at night. -->
+        <filter id="blurStreet" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter>
+        <filter id="blurBokeh" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10"/></filter>
+        <!-- People: a touch of softness, then a grade. Him cooler; her pushed from crimson toward vermilion. -->
+        <filter id="gradeHim" x="-5%" y="-5%" width="110%" height="110%">
+          <feGaussianBlur stdDeviation="0.9" result="soft"/>
+          <feColorMatrix in="soft" values="0.85 0 0 0 0  0 0.93 0 0 0  0 0 1.12 0 0.01  0 0 0 1 0"/>
+        </filter>
+        <filter id="gradeHer" x="-5%" y="-5%" width="110%" height="110%">
+          <feGaussianBlur stdDeviation="0.9" result="soft"/>
+          <feColorMatrix in="soft" values="1.25 0.05 0 0 0.02  0.14 0.92 0 0 0  0 0 0.85 0 0  0 0 0 1 0"/>
+        </filter>
+        <filter id="gooSmall" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/>
+          <feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"/>
+        </filter>
+        <mask id="rainMask" maskUnits="userSpaceOnUse" x="-2000" y="-2000" width="5000" height="5000">
+          <rect x="-2000" y="-2000" width="5000" height="5000" fill="#fff"/>
+          <polygon id="shelter" fill="#000" points="0,0 0,0 0,0"/>
+        </mask>
+        <g id="street"></g>
+        <!-- Her photograph, placed so her feet stand at y=830. -->
+        <image id="herImg" href="../../docs/creative/codex/02-her.png" x="436" y="483" width="239" height="358" filter="url(#gradeHer)"/>
+      </defs>
+
+      <g id="world" style="opacity: 0">
+        <use href="#street" filter="url(#blurStreet)"/>
+        <use href="#herImg"/>
+        <g id="splashes" fill="none" stroke="#DDE7FF" stroke-width="1.5" stroke-linecap="round"></g>
+        <g id="man">
+          <!-- His photograph, placed so his feet stand at y=830 and his raised fist is at the umbrella handle. -->
+          <image href="../../docs/creative/codex/01-him.png" x="258" y="429" width="275" height="413" filter="url(#gradeHim)"/>
+          <g id="umbrella">
+            <line x1="0" y1="0" x2="0" y2="-172" stroke="#C9D6F5" stroke-width="3"/>
+            <path d="M0,0 L0,12 C0,24 -14,24 -14,12" fill="none" stroke="#C9D6F5" stroke-width="3" stroke-linecap="round"/>
+            <g id="canopy">
+              <path id="canopyShape" fill="#CDDCFF" fill-opacity=".14" stroke="#E1EBFF" stroke-opacity=".75" stroke-width="3" stroke-linejoin="round"/>
+              <path id="canopyRibs" fill="none" stroke="#E1EBFF" stroke-opacity=".35" stroke-width="2"/>
+            </g>
+            <g id="canopyDrops" filter="url(#gooSmall)" fill="#CFE0FF" opacity=".8"></g>
+          </g>
+        </g>
+        <g id="rain" mask="url(#rainMask)"></g>
+        <path id="hang"/>
+        <ellipse id="hangShine" fill="#fff" fill-opacity=".7"/>
+      </g>
+      <!-- After he lets go, his drop lives here, outside the street, so the street can leave without him. -->
+      <g id="fall" style="display: none"></g>
+    </svg>
+  </div>
+</div>
+
+<script src="../02-openings/shared.js"></script>
+<script>
+const S = Study
+const $ = (id) => document.getElementById(id)
+const INTRO = 6400 // ms of the opening that plays by itself
+const HAND = [480, 482], TILT = 9 // umbrella handle at his raised fist once he has arrived
+const ROSE_POOL = [0.54, 0.4] // where the pool of water sits inside the rose image (fraction of its size)
+
+const CAPTIONS = [
+  [0, 'He shields her. His side stays in the rain'],
+  [0.06, 'Rain gathers on the umbrella and runs to her side'],
+  [0.3, 'One drop, heavier, bluer: him'],
+  [0.36, 'Rest: the drop hangs, heavy'],
+  [0.48, 'It lets go. The camera follows it down'],
+  [0.56, 'The street rises away; flowers open below (placeholder flowers)'],
+  [0.84, 'Her rose rises to meet him'],
+]
+
+// ---- The street (placeholder; the final film uses a photographic plate) ----
+const street = $('street')
+const r = S.rng(9)
+const LIGHTS = ['#FFB347', '#5C86FF', '#FFE2B0', '#FF5A4A']
+S.el('rect', { x: -2000, y: -2000, width: 5000, height: 2830, fill: '#0C1328' }, street)
+for (let x = -900; x < 1900;) {
+  const w = 120 + r() * 160, h = 300 + r() * 420
+  S.el('rect', { x, y: 830 - h, width: w - 8, height: h, fill: '#0F1834' }, street)
+  for (let k = 0; k < 6; k++) {
+    if (r() < 0.55) S.el('rect', { x: x + 12 + r() * (w - 40), y: 850 - h + r() * (h - 80), width: 10, height: 14, fill: '#FFB347', 'fill-opacity': (0.2 + r() * 0.35).toFixed(2) }, street)
+  }
+  x += w
+}
+const bokeh = S.el('g', { filter: 'url(#blurBokeh)' }, street)
+for (let i = 0; i < 30; i++) S.el('circle', { cx: -600 + r() * 2200, cy: 480 + r() * 330, r: 8 + r() * 26, fill: LIGHTS[i % 4], 'fill-opacity': (0.25 + r() * 0.4).toFixed(2) }, bokeh)
+S.el('rect', { x: -2000, y: 830, width: 5000, height: 2000, fill: '#080C18' }, street)
+for (let i = 0; i < 18; i++) S.el('rect', { x: -600 + r() * 2200, y: 838, width: 6 + r() * 10, height: 60 + r() * 140, fill: LIGHTS[i % 4], 'fill-opacity': 0.1 }, street)
+S.el('rect', { x: 505, y: 836, width: 100, height: 170, fill: S.HER, 'fill-opacity': 0.16 }, street)
+S.el('rect', { x: 330, y: 836, width: 110, height: 170, fill: '#3B5BD0', 'fill-opacity': 0.12 }, street)
+
+$('canopyShape').setAttribute('d', S.CANOPY)
+$('canopyRibs').setAttribute('d', S.CANOPY_RIBS)
+
+// Rain hitting her shoulders before he arrives.
+const splashes = Array.from({ length: 6 }, (_, i) => {
+  const node = S.el('path', { d: 'M-7,0 Q0,-9 7,0', transform: `translate(${505 + i * 18 + r() * 6} ${528 + (i % 3) * 18 + r() * 8})` }, $('splashes'))
+  return { node, phase: r() * 10 }
+})
+
+// Rain gathering on the canopy: each drop appears, then slides down to the low rim on her side.
+const canopyDrops = Array.from({ length: 22 }, () => ({
+  u: -0.85 + r() * 1.6, at: 0.03 + r() * 0.27, r: 3 + r() * 3,
+  node: S.el('circle', {}, $('canopyDrops')),
+}))
+
+const rain = S.buildRain($('rain'), 170, 5)
+const fall = S.buildFall($('fall'))
+// Her rose sits under his drop in the fall, so it rises to meet him.
+const rose = S.el('image', { href: '../../docs/creative/codex/03b-rose-watercolour.png' })
+$('fall').insertBefore(rose, fall.drop)
+const openLines = [...document.querySelectorAll('#openLines .line')]
+const fallLines = [...document.querySelectorAll('#fallLines .line')]
+
+// Umbrella-local point → scene point, once he has arrived.
+function toScene(lx, ly, tilt) {
+  const a = (tilt * Math.PI) / 180
+  return [HAND[0] + lx * Math.cos(a) - ly * Math.sin(a), HAND[1] + lx * Math.sin(a) + ly * Math.cos(a)]
+}
+
+let introStart = null
+let introDone = matchMedia('(prefers-reduced-motion: reduce)').matches || scrollY > 0
+let hintShown = false
+
+function render(p, now, frozen) {
+  if (p > 0.002) introDone = true
+  if (introStart === null) introStart = now
+  // ?p=0&t=3000 freezes a moment of the opening for screenshots.
+  const frozenT = frozen && new URLSearchParams(location.search).get('t')
+  const t = frozenT ? +frozenT : frozen || introDone ? INTRO : Math.min(INTRO, now - introStart)
+  if (t >= INTRO) introDone = true
+  S.renderRain(rain, now)
+  $('grain').style.transform = `translate(${(Math.sin(now * 0.37) * 40).toFixed(0)}px, ${(Math.cos(now * 0.53) * 40).toFixed(0)}px)`
+
+  // ---- The opening that plays by itself ----
+  const walk = S.easeOut(S.seg(t, 1500, 3600))
+  const bob = walk > 0 && walk < 1 ? -Math.abs(Math.sin(t * 0.012)) * 5 : 0
+  $('man').setAttribute('transform', `translate(${S.lerp(-460, 0, walk)} ${bob})`)
+  const open = S.easeOut(S.seg(t, 4200, 5300))
+  const sx = S.lerp(0.07, 1, open), sy = S.lerp(1.25, 1, open)
+  $('umbrella').setAttribute('transform', `translate(${HAND[0]} ${HAND[1]}) rotate(${TILT * open})`)
+  $('canopy').setAttribute('transform', `translate(0 -110) scale(${sx} ${sy})`)
+
+  if (open > 0.05) {
+    const L = toScene(-190 * sx, -110 + 60 * sy, TILT * open), R = toScene(190 * sx, -110 + 60 * sy, TILT * open)
+    const foot = (pt) => `${(pt[0] + S.WIND * (1400 - pt[1])).toFixed(1)},1400`
+    $('shelter').setAttribute('points', `${L[0].toFixed(1)},${L[1].toFixed(1)} ${R[0].toFixed(1)},${R[1].toFixed(1)} ${foot(R)} ${foot(L)}`)
+  }
+  for (const s of splashes) {
+    const flicker = Math.pow(0.5 + 0.5 * Math.sin(now * 0.03 + s.phase), 4)
+    s.node.style.opacity = (t > 600 ? 0.8 : 0) * flicker * (1 - open)
+  }
+  $('title').style.opacity = S.seg(t, 5000, 6200) * (1 - S.seg(p, 0.02, 0.07))
+  if (introDone && !hintShown) { $('hint').style.opacity = ''; hintShown = true }
+
+  // ---- Scroll: rain runs down the canopy into one drop at the rim ----
+  for (const d of canopyDrops) {
+    const u = S.lerp(d.u, 1, S.easeIn(S.seg(p, d.at + 0.02, d.at + 0.14)))
+    const rad = d.r * (1 - S.seg(u, 0.93, 1))
+    d.node.setAttribute('cx', (190 * u).toFixed(1))
+    d.node.setAttribute('cy', (-50 - 122 * (1 - u * u) - rad * 0.6).toFixed(1))
+    d.node.setAttribute('r', rad.toFixed(2))
+    d.node.style.opacity = S.seg(p, d.at, d.at + 0.02)
+  }
+
+  const [tx, ty] = toScene(190, -50, TILT)
+  const rad = S.lerp(3, 16, S.seg(p, 0.06, 0.4))
+  const stretch = S.lerp(1, 1.45, S.seg(p, 0.2, 0.46))
+  const cy = ty + rad * stretch
+  const released = p >= 0.48
+  $('hang').setAttribute('d', S.dropPath(tx, cy, rad, stretch, 1.1))
+  $('hang').setAttribute('fill', S.mix('#CFE0FF', S.HIS, S.seg(p, 0.18, 0.42)))
+  $('hang').style.opacity = released ? 0 : S.seg(p, 0.05, 0.08) * 0.9
+  $('hangShine').setAttribute('cx', tx - rad * 0.35); $('hangShine').setAttribute('cy', cy + rad * 0.2)
+  $('hangShine').setAttribute('rx', rad * 0.18); $('hangShine').setAttribute('ry', rad * 0.32)
+  $('hangShine').style.opacity = released ? 0 : S.seg(p, 0.05, 0.08)
+
+  // ---- A gentle push-in that settles before he lets go, so the fall is one unbroken motion ----
+  const k = S.lerp(1, 1.35, S.easeInOut(S.seg(p, 0.3, 0.47)))
+
+  // ---- He lets go and simply falls: accelerating, then a steady fall the camera follows down ----
+  const v = S.view
+  const s = S.seg(p, 0.48, 0.56)
+  const fallDist = p < 0.56 ? 300 * s * s : 300 + (p - 0.56) * 7500
+  const startY = cy // the drop's centre stays put on screen during the push-in, since we zoom around it
+  const anchorY = v.y + v.h * 0.45
+  const camY = Math.max(0, startY + fallDist - anchorY)
+  $('world').setAttribute('transform', `translate(0 ${(-camY).toFixed(1)}) translate(${tx} ${cy}) scale(${k}) translate(${-tx} ${-cy})`)
+  // The street rises away and fades while the blooms fade in from below: same motion, one direction.
+  $('world').style.opacity = S.seg(t, 0, 900) * (1 - S.seg(camY, 150, 550))
+  $('fall').style.display = released ? '' : 'none'
+  if (released) {
+    const dropX = S.lerp(tx, v.x + v.w / 2, S.easeInOut(S.seg(camY, 0, 900)))
+    const dropY = Math.min(startY + fallDist, anchorY)
+    S.renderFall(fall, S.seg(p, 0.5, 1), { travel: camY, x: dropX, y: dropY, fade: S.seg(camY, 100, 600) })
+    // Her rose rises from below until its pool sits just under his drop.
+    const size = Math.min(v.w * 1.05, v.h * 0.75)
+    const poolY = S.lerp(v.y + v.h + size * 0.7, dropY + 34, S.easeOut(S.seg(p, 0.8, 1)))
+    rose.setAttribute('x', (dropX - size * ROSE_POOL[0]).toFixed(1))
+    rose.setAttribute('y', (poolY - size * ROSE_POOL[1]).toFixed(1))
+    rose.setAttribute('width', size.toFixed(1))
+    rose.setAttribute('height', size.toFixed(1))
+  }
+  document.body.style.background = S.mix(S.mix(S.NIGHT, '#1B0E2E', S.seg(camY, 100, 900)), '#2B1240', S.seg(p, 0.7, 1))
+
+  S.renderLines(openLines, p)
+  S.renderLines(fallLines, p)
+  $('fallLines').style.opacity = 1 - S.seg(p, 0.9, 0.95)
+  $('bar').style.transform = `scaleX(${p})`
+  if (introDone) S.caption(p, CAPTIONS, $('cap'))
+  else $('cap').textContent = 'Opening movement: plays once; any scroll skips it'
+}
+
+const reframe = () => S.frame($('svg'), 600)
+reframe()
+addEventListener('resize', reframe)
+S.run({ render, duration: 50000, onInput: () => { introDone = true } })
+</script>
+</body>
+</html>

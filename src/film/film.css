@@ -1,0 +1,588 @@
+:root {
+  --night: #0a0f1f;
+  --his: #a5beff;
+  --her: #ff5a47;
+  --string: #e8352a;
+  --label: #c9d1ea;
+  --font-his: 'Nothing You Could Do', 'Bradley Hand', cursive;
+  --font-her: 'Bodoni Moda', Georgia, serif;
+  --font-label: 'Inter', system-ui, sans-serif;
+}
+
+/* ---- Stage: fixed full-screen layers, drawn by the renderer ---- */
+.stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh; /* the large viewport: steady while phone browser bars slide in and out */
+  overflow: hidden;
+  background: var(--night);
+}
+.world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1000px;
+  height: 1000px;
+  transform-origin: 0 0;
+  will-change: transform, opacity;
+}
+.world > img,
+.ground {
+  position: absolute;
+  max-width: none;
+}
+.ground {
+  background: linear-gradient(to bottom, transparent, #080c18 80px);
+}
+.umbrella {
+  /* The umbrella photos are clear plastic on black: blend by brightness. */
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+.figure {
+  will-change: transform, opacity;
+}
+.world-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1000px;
+  height: 1000px;
+  overflow: visible;
+}
+.splashes path {
+  fill: none;
+  stroke: #dde7ff;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.canopy-drops circle {
+  fill: #cfe0ff;
+}
+.canopy-drops {
+  opacity: 0.8;
+}
+.shine {
+  fill: #fff;
+  fill-opacity: 0.7;
+}
+.stage canvas,
+.screen-svg,
+.rose {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.bloom.far {
+  filter: blur(2px);
+}
+.bloom.near {
+  filter: blur(9px);
+}
+.rose {
+  visibility: hidden;
+}
+.rose img {
+  position: absolute;
+  max-width: none;
+}
+.glow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+.glow::before {
+  content: '';
+  position: absolute;
+  left: -45vmax;
+  top: -45vmax;
+  width: 90vmax;
+  height: 90vmax;
+  background: radial-gradient(circle, rgba(190, 90, 255, 0.55), rgba(157, 59, 224, 0.18) 40%, transparent 70%);
+}
+.ring {
+  fill: none;
+  stroke: #e9dcff;
+  stroke-width: 1.5;
+  opacity: 0;
+}
+
+/* ---- Words ---- */
+.title {
+  position: fixed;
+  z-index: 2;
+  top: 5.5%; /* above the umbrella's crown on every screen shape */
+  left: 16px;
+  right: 16px;
+  margin: 0;
+  text-align: center;
+  font-weight: 400;
+  pointer-events: none;
+  opacity: 0;
+}
+.title small {
+  display: block;
+  margin-bottom: 14px;
+  font: 400 11px/1.4 var(--font-label);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+.title span {
+  font: italic 500 clamp(40px, min(9vw, 7vh), 68px) / 1.05 var(--font-her);
+  color: #fff;
+}
+.lines {
+  position: fixed;
+  z-index: 2;
+  left: 16px;
+  right: 16px;
+  display: grid;
+  pointer-events: none;
+  text-align: center;
+}
+.lines.sky {
+  top: 10%;
+}
+/* Chapter 1 is one beat, so its lines simply stack (and wrap) in normal flow, each in its reserved place:
+   below the couple on phones, where the wet street is empty… */
+.lines.street {
+  bottom: 13%;
+  display: flex;
+  flex-direction: column;
+}
+/* Short phones: tighter lines just above Play, clear of the couple's feet. */
+@media (max-aspect-ratio: 17/20) and (max-height: 700px) {
+  .lines.street {
+    bottom: 10.5%;
+  }
+  .lines.street .line {
+    line-height: 1.15;
+  }
+}
+/* …and beside them on wider screens, clear of the umbrella. */
+@media (min-aspect-ratio: 17/20) {
+  .lines.street {
+    top: 32%;
+    bottom: auto;
+    left: 5vw;
+    right: auto;
+    width: min(36vw, 540px);
+    text-align: left;
+  }
+}
+/* Lines of one beat share a cell and stack by row, so a later beat can reuse the same place. */
+.line {
+  grid-area: 1 / 1;
+  margin: 0;
+  margin-top: calc(var(--row, 0) * 1.35em);
+  visibility: hidden;
+  opacity: 0;
+}
+.lines.street .line {
+  margin-top: 0;
+}
+.line.his {
+  font: 400 clamp(20px, min(6.2vw, 6.5vh), 44px) / 1.3 var(--font-his);
+  color: var(--his);
+  text-shadow: 0 0 18px rgba(80, 120, 255, 0.45);
+}
+.line.her {
+  font: italic 500 clamp(20px, min(6vw, 6.3vh), 42px) / 1.3 var(--font-her);
+  color: var(--her);
+  text-shadow: 0 0 18px rgba(255, 60, 40, 0.35);
+}
+.hint {
+  position: fixed;
+  z-index: 2;
+  bottom: 84px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font: 400 12px/1.4 var(--font-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--label);
+  pointer-events: none;
+  opacity: 0;
+}
+.play {
+  position: fixed;
+  z-index: 3;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  left: 50%;
+  translate: -50% 0;
+  min-width: 120px;
+  min-height: 44px;
+  padding: 0 22px;
+  font: 400 12px/1 var(--font-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(10, 15, 31, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  -webkit-backdrop-filter: blur(6px); /* Safari before 18 */
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+.play:focus-visible,
+.loader-begin:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ---- The red string loading screen ---- */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: var(--night);
+}
+.loader-string {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.loader-string path {
+  fill: none;
+  stroke: var(--string);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(232, 53, 42, 0.55));
+}
+.loader-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 72%;
+  margin: 0;
+  text-align: center;
+  font: italic 500 clamp(18px, 4vw, 24px) / 1.2 var(--font-her);
+  letter-spacing: 0.04em;
+  color: rgba(230, 236, 255, 0.55);
+}
+.loader-begin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-height: 44px;
+  padding: 0 20px;
+  font: 400 12px/1 var(--font-label);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(232, 53, 42, 0.8);
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+.loader-begin[data-visible='true'] {
+  opacity: 1;
+}
+.loader-begin:disabled {
+  pointer-events: none;
+}
+/* On narrow screens Begin sits under the end of the string instead of beside it. */
+@media (max-width: 600px) {
+  .loader-begin {
+    margin-left: -110px;
+    margin-top: 48px;
+  }
+}
+
+/* ---- Chapter 2's layers, which rise away above the waterline ---- */
+.act2 {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+/* ---- Chapter 3: inside her rose ---- */
+.inside {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  background: #2a0a12;
+  will-change: transform, opacity;
+}
+.inside > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform, opacity;
+}
+.inside > img + img {
+  opacity: 0;
+}
+/* The pool's surface, seen from just below as we sink through it. */
+.waterline {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  top: -24px;
+  height: 48px;
+  background: linear-gradient(to bottom, transparent, rgba(233, 214, 255, 0.55) 48%, rgba(255, 255, 255, 0.85) 50%, rgba(157, 59, 224, 0.4) 54%, transparent);
+  filter: blur(2px);
+}
+.ink {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(45, 91, 255, 0.6), rgba(45, 91, 255, 0.22) 45%, transparent 70%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+/* His colour washing up her petals from the water: its soft top edge climbs as she drinks him. */
+.stain {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 130%;
+  background: linear-gradient(to top, rgba(70, 100, 255, 0.75), rgba(90, 90, 255, 0.55) 55%, rgba(110, 90, 255, 0.25) 75%, transparent);
+  mix-blend-mode: color;
+  opacity: 0;
+  will-change: transform;
+}
+.petal-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 47% 30%, rgba(255, 150, 210, 0.45), rgba(180, 70, 220, 0.25) 45%, transparent 75%);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
+/* ---- Chapter 4: outside again, time has passed ---- */
+.outside {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  background: radial-gradient(ellipse at 50% 58%, #4a0d14, #16070c 70%);
+}
+.outside > img {
+  position: absolute;
+  max-width: none;
+}
+.her-strong {
+  opacity: 0;
+  filter: blur(0.6px);
+}
+.reflection {
+  filter: blur(1.6px);
+  opacity: 0;
+}
+.dry-petal {
+  left: 0;
+  top: 0;
+  width: 64px;
+  margin: -32px 0 0 -32px;
+  opacity: 0;
+}
+
+/* ---- Low, centred lines inside and around her rose ---- */
+.lines.deep {
+  bottom: 15%;
+}
+/* Her red on her red petals needs a dark halo to stay readable. */
+.lines.deep .line,
+.lines.deep .her-word {
+  text-shadow: 0 0 3px rgba(18, 2, 8, 0.95), 0 0 14px rgba(18, 2, 8, 0.85), 0 0 28px rgba(18, 2, 8, 0.6);
+}
+.lines.deep .her-word,
+.lines.deep .line.her {
+  color: #ff6a55;
+}
+/* A soft darkening at the bottom of the inside view, where the lines sit. */
+.inside::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(22, 4, 12, 0.78), rgba(22, 4, 12, 0.35) 30%, transparent 48%);
+  pointer-events: none;
+}
+/* His words, each stacked over hers; scrolling hands them over one by one. */
+.w {
+  display: inline-grid;
+}
+.w > span {
+  grid-area: 1 / 1;
+}
+.her-word {
+  font: italic 500 1.06em / 1.3 var(--font-her); /* close to his handwriting's width, so words don't gap */
+  color: var(--her);
+  text-shadow: 0 0 18px rgba(255, 60, 40, 0.35);
+  opacity: 0;
+}
+
+/* ---- Chapters 5–6 ---- */
+.outside-scene {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.outside-scene > img {
+  position: absolute;
+  max-width: none;
+}
+.her-leaving,
+.stem {
+  opacity: 0;
+}
+.her-leaving {
+  filter: blur(0.6px);
+  transform-origin: 50% 100%;
+}
+.storm {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.void {
+  position: absolute;
+  inset: 0;
+  background: #030305;
+  opacity: 0;
+}
+.end-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+}
+.end-svg .ripple {
+  fill: none;
+  stroke: #c9d2ec;
+  opacity: 0;
+}
+.end-svg .flash,
+.end-svg .horizon {
+  opacity: 0;
+}
+/* The grey drop catches a thin rim of cold light as it falls, so the eye follows it down. */
+.end-water .fall-grey {
+  filter: drop-shadow(0 0 5px rgba(200, 214, 255, 0.55));
+}
+/* His drop: hanging from the umbrella, and falling. */
+.drop,
+.fall-drop {
+  opacity: 0;
+}
+.fall-drop {
+  position: absolute;
+  max-width: none;
+  filter: hue-rotate(0deg); /* the purple tint is animated; starting with a filter avoids creating one mid-fall */
+  will-change: opacity, filter;
+}
+/* The last of the water (chapters 5–6), positioned in screen pixels by the renderer. */
+.end-water {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.end-water img {
+  position: absolute;
+  max-width: none;
+  height: auto;
+  opacity: 0;
+  transform-origin: 50% 100%;
+}
+
+/* A label, as if someone else filled it in: cold, neutral, belonging to nobody. */
+.nobody {
+  position: fixed;
+  z-index: 2;
+  top: 55%; /* moved by the renderer to the exact spot where he vanished */
+  left: 0;
+  right: 0;
+  margin: 0;
+  translate: 0 -50%;
+  text-align: center;
+  font: 400 clamp(20px, 4.6vw, 46px) / 1.4 var(--font-label);
+  letter-spacing: 0.42em;
+  text-indent: 0.42em; /* balances the tracking after the last letter, keeping the name centred */
+  color: #c3c8d4;
+  text-shadow: 0 0 22px rgba(170, 190, 235, 0.35);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* ---- Credits ---- */
+.credits {
+  position: fixed;
+  z-index: 4;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 16px;
+  text-align: center;
+  color: #e6e8ef;
+  visibility: hidden;
+  pointer-events: none;
+}
+.credits p {
+  margin: 0;
+}
+.credits-title {
+  font: italic 500 clamp(30px, 6vw, 48px) / 1.1 var(--font-her);
+  margin-bottom: 44px !important;
+}
+.credits-role,
+.credits-ask {
+  font: 400 11px/1.6 var(--font-label);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #9aa0b2;
+}
+.credits-name {
+  font: italic 500 clamp(22px, 4vw, 30px) / 1.3 var(--font-her);
+  margin-bottom: 36px !important;
+}
+.credits-link {
+  margin-top: 6px;
+  font: 400 15px/1.6 var(--font-label);
+  letter-spacing: 0.08em;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(232, 53, 42, 0.8);
+}
+.credits-again {
+  margin-top: 40px;
+  min-height: 44px;
+  padding: 0 22px;
+  font: 400 12px/1 var(--font-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.credits-link:focus-visible,
+.credits-again:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}

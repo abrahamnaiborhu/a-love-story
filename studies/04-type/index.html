@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study 04 — Type</title>
+<!-- Throwaway type study for Sprint 1 (PRODUCTION_PLAN §5 item 3). Fonts load from Google Fonts here only;
+     the chosen pairing will be self-hosted in the app. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Reenie+Beanie&family=Nothing+You+Could+Do&family=Cormorant+Garamond:ital,wght@1,500&family=Playfair+Display:ital,wght@1,500&family=Bodoni+Moda:ital,opsz,wght@1,6..96,500&family=IBM+Plex+Mono:wght@400&family=DM+Mono:wght@400&family=Inter:wght@400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px 16px 48px; background: #070A14; color: #E6ECFF; font: 13px/1.5 ui-monospace, Menlo, monospace; }
+  header { max-width: 1400px; margin: 0 auto 20px; }
+  header h1 { margin: 0 0 4px; font: 400 15px/1.4 ui-monospace, Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; }
+  header p { margin: 0; color: #8E99BC; }
+  main { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 16px; }
+  .card { position: relative; overflow: hidden; border-radius: 6px; padding: 28px 24px 24px; isolation: isolate; min-height: 860px; }
+  /* The real street plate, darkened, as the background the words will live on. */
+  .card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(rgba(6,9,20,.55), rgba(6,9,20,.75)), url("../../src/assets/media/street-portrait-1024.avif") center / cover; }
+  .tag { margin: 0 0 22px; color: #8E99BC; letter-spacing: .1em; text-transform: uppercase; font-size: 11px; }
+  .tag b { color: #E6ECFF; font-weight: 400; }
+  .beat { margin: 0 0 6px; color: #6F7AA0; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+  .his { margin: 0 0 18px; color: #A5BEFF; text-shadow: 0 0 18px rgba(80,120,255,.45); }
+  .her { color: #FF5A47; text-shadow: 0 0 18px rgba(255,60,40,.35); }
+  .label { color: #9A9DA5; letter-spacing: .3em; text-transform: uppercase; }
+  .title { margin: 0 0 26px; text-align: center; }
+  .title small { display: block; margin-bottom: 10px; letter-spacing: .32em; text-transform: uppercase; font-size: 10px; color: #C9D1EA; }
+  .title strong { font-weight: 500; font-size: 46px; line-height: 1.05; color: #fff; }
+  .end { margin: 26px 0 0; text-align: center; font-size: 15px; }
+  .credits { margin: 22px 0 0; text-align: center; font-size: 11px; line-height: 2; letter-spacing: .2em; text-transform: uppercase; color: #C9D1EA; }
+
+  /* Pairing A — Tender */
+  .a .h { font-family: 'Homemade Apple', cursive; font-size: 21px; line-height: 1.7; }
+  .a .s { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; font-size: 27px; line-height: 1.25; }
+  .a .l { font-family: 'IBM Plex Mono', monospace; }
+  /* Pairing B — Raw */
+  .b .h { font-family: 'Reenie Beanie', cursive; font-size: 34px; line-height: 1.1; }
+  .b .s { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; font-size: 24px; line-height: 1.3; }
+  .b .l { font-family: 'DM Mono', monospace; }
+  /* Pairing C — Cinematic */
+  .c .h { font-family: 'Nothing You Could Do', cursive; font-size: 24px; line-height: 1.55; }
+  .c .s { font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 500; font-size: 25px; line-height: 1.25; }
+  .c .l { font-family: 'Inter', sans-serif; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Study 04 · Type · three pairings</h1>
+  <p>His handwriting (blue) · her typeface (red) · the neutral label (grey). Same lines, same street, only the fonts change.</p>
+</header>
+<main>
+  <section class="card a" aria-label="Pairing A, Tender">
+    <p class="tag l">A · <b>Tender</b> · Homemade Apple / Cormorant Garamond / IBM Plex Mono</p>
+    <p class="title"><small class="l">Abraham Naiborhu presents</small><strong class="s">A Love Story</strong></p>
+    <p class="beat l">1 · First sight</p>
+    <p class="his h">It was raining.<br>She had no umbrella.<br>I had one.</p>
+    <p class="beat l">2 · Falling</p>
+    <p class="his h">I didn't want to land anywhere but you.<br>We.</p>
+    <p class="beat l">3 · Becoming her</p>
+    <p class="his h"><span class="her s">I</span> think I like that.</p>
+    <p class="beat l">4 · Losing himself</p>
+    <p class="his h">I used to… <span class="her s">…you don't do that anymore.</span></p>
+    <p class="beat l">5 · Losing her</p>
+    <p class="her s">Take care of yourself.</p>
+    <p class="end label l">Mr. Nobody</p>
+    <p class="credits l">Written &amp; directed by Abraham Naiborhu<br>Have a story to tell? → abrahamnaiborhu.com</p>
+  </section>
+
+  <section class="card b" aria-label="Pairing B, Raw">
+    <p class="tag l">B · <b>Raw</b> · Reenie Beanie / Playfair Display / DM Mono</p>
+    <p class="title"><small class="l">Abraham Naiborhu presents</small><strong class="s">A Love Story</strong></p>
+    <p class="beat l">1 · First sight</p>
+    <p class="his h">It was raining.<br>She had no umbrella.<br>I had one.</p>
+    <p class="beat l">2 · Falling</p>
+    <p class="his h">I didn't want to land anywhere but you.<br>We.</p>
+    <p class="beat l">3 · Becoming her</p>
+    <p class="his h"><span class="her s">I</span> think I like that.</p>
+    <p class="beat l">4 · Losing himself</p>
+    <p class="his h">I used to… <span class="her s">…you don't do that anymore.</span></p>
+    <p class="beat l">5 · Losing her</p>
+    <p class="her s">Take care of yourself.</p>
+    <p class="end label l">Mr. Nobody</p>
+    <p class="credits l">Written &amp; directed by Abraham Naiborhu<br>Have a story to tell? → abrahamnaiborhu.com</p>
+  </section>
+
+  <section class="card c" aria-label="Pairing C, Cinematic">
+    <p class="tag l">C · <b>Cinematic</b> · Nothing You Could Do / Bodoni Moda / Inter</p>
+    <p class="title"><small class="l">Abraham Naiborhu presents</small><strong class="s">A Love Story</strong></p>
+    <p class="beat l">1 · First sight</p>
+    <p class="his h">It was raining.<br>She had no umbrella.<br>I had one.</p>
+    <p class="beat l">2 · Falling</p>
+    <p class="his h">I didn't want to land anywhere but you.<br>We.</p>
+    <p class="beat l">3 · Becoming her</p>
+    <p class="his h"><span class="her s">I</span> think I like that.</p>
+    <p class="beat l">4 · Losing himself</p>
+    <p class="his h">I used to… <span class="her s">…you don't do that anymore.</span></p>
+    <p class="beat l">5 · Losing her</p>
+    <p class="her s">Take care of yourself.</p>
+    <p class="end label l">Mr. Nobody</p>
+    <p class="credits l">Written &amp; directed by Abraham Naiborhu<br>Have a story to tell? → abrahamnaiborhu.com</p>
+  </section>
+</main>
+</body>
+</html>

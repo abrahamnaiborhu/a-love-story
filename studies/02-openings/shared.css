@@ -1,0 +1,44 @@
+/* Study 02 shared styles (throwaway). */
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: #0A0F1F;
+  color: #fff;
+  font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  -webkit-font-smoothing: antialiased;
+}
+#track { height: 1000vh; }
+#stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+#stage svg { display: block; width: 100%; height: 100%; }
+
+/* Study HUD: inverts against whatever the scene shows. */
+.hud { position: fixed; z-index: 3; color: #fff; mix-blend-mode: difference; }
+.top { top: 16px; left: 16px; right: 16px; display: flex; justify-content: space-between; gap: 16px; }
+#cap { text-align: right; max-width: 60ch; }
+.bar { top: 0; left: 0; right: 0; height: 2px; }
+.bar i { display: block; height: 100%; width: 100%; background: currentColor; transform-origin: 0 50%; transform: scaleX(0); }
+#play {
+  bottom: 20px; left: 50%; translate: -50% 0;
+  min-width: 112px; min-height: 44px; padding: 0 20px;
+  font: inherit; letter-spacing: .12em; text-transform: uppercase;
+  background: transparent; color: #fff; border: 1px solid #fff; border-radius: 999px; cursor: pointer;
+}
+#play:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.hint { bottom: 72px; left: 0; right: 0; text-align: center; margin: 0; opacity: .7; transition: opacity .6s; }
+@media (max-width: 600px) {
+  .top { flex-direction: column; gap: 4px; }
+  #cap { text-align: left; }
+}
+
+/* Story text: real text over the scene. Fonts are placeholders, not a typography decision. */
+.title { position: fixed; z-index: 2; top: 28%; left: 16px; right: 16px; margin: 0; text-align: center; pointer-events: none; opacity: 0; }
+.title small { display: block; margin-bottom: 14px; font-size: 11px; letter-spacing: .35em; text-transform: uppercase; opacity: .75; }
+.title strong { font: italic 400 clamp(38px, 8vw, 68px)/1.05 Georgia, 'Times New Roman', serif; }
+.lines { position: fixed; z-index: 2; left: 16px; right: 16px; bottom: 22%; text-align: center; pointer-events: none; }
+.line {
+  margin: 0 0 .3em;
+  font: 400 clamp(24px, 5.4vw, 42px)/1.15 'Bradley Hand', 'Segoe Print', 'Snell Roundhand', cursive;
+  color: #A5BEFF;
+  text-shadow: 0 0 18px rgba(80, 120, 255, .4);
+  opacity: 0;
+}

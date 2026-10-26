@@ -1,0 +1,47 @@
+# A Love Story — PRIVATE source repository.
+# This repository keeps everything needed to rebuild the film: source, docs and prompts, the original
+# artwork in docs/creative/, the optimised images in src/assets/media/, studies and agent skills.
+# Only the reviewed build is ever published, from a separate public repository (see docs/DEPLOY.md).
+
+# ---- Secrets: never commit ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+.npmrc
+
+# ---- Generated: rebuilt by npm, Vite or the release script ----
+node_modules
+dist
+dist-ssr
+release/
+.vite
+*.tsbuildinfo
+coverage
+
+# ---- Logs ----
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ---- Personal and machine-specific ----
+*.local
+.claude/settings.local.json
+.DS_Store
+Thumbs.db
+
+# ---- Editor directories and files ----
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study 02A — Opening: the window</title>
+<!-- Throwaway study; see docs/PROJECT_SCRIPT.md, "Prototype agreement — Study 02". -->
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<div class="hud bar"><i id="bar"></i></div>
+<header class="hud top"><span>Study 02A · Opening: the window · throwaway</span><span id="cap" aria-live="polite"></span></header>
+<p class="title" id="title" style="opacity: 1"><small>Abraham Naiborhu presents</small><strong>A Love Story</strong></p>
+<div class="lines" id="openLines">
+  <p class="line" data-in="0.05" data-out="0.44">I wasn't looking for anything.</p>
+  <p class="line" data-in="0.2" data-out="0.44">Then it rained.</p>
+</div>
+<div class="lines" id="fallLines">
+  <p class="line" data-in="0.72">I fell.</p>
+  <p class="line" data-in="0.84">I kept falling.</p>
+</div>
+<p class="hud hint" id="hint">Scroll, or press Play</p>
+<button class="hud" id="play" type="button" aria-pressed="false">Play</button>
+
+<div id="track">
+  <div id="stage">
+    <svg id="svg" role="img" aria-labelledby="svgTitle">
+      <title id="svgTitle">Night, rain on a window. Outside, a woman in red. A blue drop slides down the glass toward her, then the view dives into the drop and falls through opening flowers.</title>
+      <defs>
+        <filter id="blurOut" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="7"/></filter>
+        <filter id="blurSoft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+        <filter id="blurRain"><feGaussianBlur stdDeviation="0.8"/></filter>
+        <g id="outside"></g>
+        <!-- The drop's trail wipes the fog and reveals the sharp street behind it. -->
+        <mask id="fogMask" maskUnits="userSpaceOnUse" x="-2000" y="-2000" width="5000" height="5000">
+          <rect x="-2000" y="-2000" width="5000" height="5000" fill="#fff"/>
+          <path id="trailFog" fill="none" stroke="#000" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" filter="url(#blurSoft)"/>
+        </mask>
+        <mask id="sharpMask" maskUnits="userSpaceOnUse" x="-2000" y="-2000" width="5000" height="5000">
+          <path id="trailSharp" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" filter="url(#blurSoft)"/>
+        </mask>
+        <clipPath id="lensClip"><circle id="lensCircle"/></clipPath>
+      </defs>
+
+      <g id="world">
+        <use href="#outside" filter="url(#blurOut)"/>
+        <use href="#outside" mask="url(#sharpMask)"/>
+        <g id="rain" filter="url(#blurRain)" opacity=".7"></g>
+        <rect id="fog" x="-2000" y="-2000" width="5000" height="5000" fill="#A9BCE6" mask="url(#fogMask)"/>
+        <g id="glassDrops"></g>
+        <path id="reflection" fill="#7D97DA" opacity=".07" transform="translate(300 940) scale(1.25)"/>
+        <path id="hisDrop"/>
+        <g id="lens" clip-path="url(#lensClip)">
+          <use href="#outside" id="lensView"/>
+          <circle id="lensTint" fill="#2D5BFF" fill-opacity=".25"/>
+        </g>
+        <ellipse id="hisShine" fill="#fff" fill-opacity=".7"/>
+      </g>
+      <g id="fall" opacity="0"></g>
+    </svg>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+const S = Study
+const $ = (id) => document.getElementById(id)
+const START = [360, 230], REST = [636, 500], HER_CENTRE = [645, 560]
+
+const CAPTIONS = [
+  [0, 'Opening: a wet window at night. She is outside, in red'],
+  [0.1, 'His drop gathers on the glass'],
+  [0.2, 'It slides toward her, clearing the fog'],
+  [0.44, 'Rest: through the drop, her, upside down'],
+  [0.5, 'The camera dives into the drop'],
+  [0.64, 'Falling: flowers open as he passes'],
+]
+
+// ---- The street outside, seen through the glass ----
+const outside = $('outside')
+const r = S.rng(3)
+const LIGHTS = ['#FFB347', '#5C86FF', '#FFE2B0', '#FF5A4A']
+S.el('rect', { x: -2000, y: -2000, width: 5000, height: 2760, fill: '#0C1328' }, outside)
+for (let x = -900; x < 1900;) {
+  const w = 120 + r() * 160, h = 260 + r() * 460
+  S.el('rect', { x, y: 760 - h, width: w - 8, height: h, fill: '#101A38' }, outside)
+  for (let k = 0; k < 6; k++) {
+    if (r() < 0.6) S.el('rect', { x: x + 12 + r() * (w - 40), y: 780 - h + r() * (h - 60), width: 10, height: 14, fill: '#FFB347', 'fill-opacity': (0.25 + r() * 0.4).toFixed(2) }, outside)
+  }
+  x += w
+}
+S.el('rect', { x: -2000, y: 760, width: 5000, height: 2000, fill: '#080C18' }, outside)
+for (let i = 0; i < 34; i++) S.el('circle', { cx: -600 + r() * 2200, cy: 420 + r() * 360, r: 8 + r() * 30, fill: LIGHTS[i % 4], 'fill-opacity': (0.2 + r() * 0.4).toFixed(2) }, outside)
+for (let i = 0; i < 18; i++) S.el('rect', { x: -600 + r() * 2200, y: 770, width: 6 + r() * 10, height: 60 + r() * 140, fill: LIGHTS[i % 4], 'fill-opacity': 0.12 }, outside)
+const her = S.el('g', { transform: 'translate(640 760) scale(.8)' }, outside)
+S.el('rect', { x: -40, y: 6, width: 80, height: 180, fill: S.HER, 'fill-opacity': 0.18 }, her)
+S.el('path', { d: S.WOMAN, fill: S.HER }, her)
+S.el('line', { x1: 22, y1: -210, x2: 14, y2: -400, stroke: '#3A0E0E', 'stroke-width': 4 }, her)
+S.el('path', { d: S.CANOPY, fill: '#C92A22', transform: 'translate(14 -400) scale(.62)' }, her)
+
+// ---- The glass ----
+for (let i = 0; i < 120; i++) {
+  S.el('circle', { cx: -600 + r() * 2200, cy: -500 + r() * 2000, r: (1.5 + r() * 4.5).toFixed(1), fill: '#D2E1FF', 'fill-opacity': 0.1, stroke: '#EBF2FF', 'stroke-opacity': 0.35, 'stroke-width': 0.8 }, $('glassDrops'))
+}
+$('reflection').setAttribute('d', S.MAN)
+const rain = S.buildRain($('rain'), 140, 5)
+const fall = S.buildFall($('fall'))
+
+const openLines = [...document.querySelectorAll('#openLines .line')]
+const fallLines = [...document.querySelectorAll('#fallLines .line')]
+
+function dropAt(e) {
+  return [S.lerp(START[0], REST[0], e) + Math.sin(e * 10) * 16 * (1 - e), S.lerp(START[1], REST[1], e)]
+}
+
+function render(p, now) {
+  S.renderRain(rain, now)
+  $('title').style.opacity = 1 - S.seg(p, 0.02, 0.07)
+  $('fog').setAttribute('fill-opacity', S.lerp(0.1, 0.3, S.seg(p, 0.02, 0.3)).toFixed(3))
+
+  // His drop gathers, slides toward her (stretched while moving), and rests over her.
+  const e = S.easeInOut(S.seg(p, 0.12, 0.44))
+  const [x, y] = dropAt(e)
+  const rad = S.lerp(6, 15, S.seg(p, 0.03, 0.12))
+  const moving = Math.sin(e * Math.PI)
+  $('hisDrop').setAttribute('d', S.dropPath(x, y, rad, 1.05 + 0.4 * moving, 0.4 + 0.9 * moving))
+  $('hisDrop').setAttribute('fill', S.HIS)
+  $('hisDrop').setAttribute('fill-opacity', 0.6)
+  $('hisShine').setAttribute('cx', x - rad * 0.35); $('hisShine').setAttribute('cy', y + rad * 0.1)
+  $('hisShine').setAttribute('rx', rad * 0.18); $('hisShine').setAttribute('ry', rad * 0.32)
+
+  let trail = ''
+  const steps = Math.max(1, Math.round(e * 30))
+  for (let i = 0; i <= steps; i++) {
+    const [tx, ty] = dropAt((e * i) / steps)
+    trail += (i ? 'L' : 'M') + tx.toFixed(1) + ',' + ty.toFixed(1)
+  }
+  $('trailFog').setAttribute('d', trail)
+  $('trailSharp').setAttribute('d', trail)
+
+  // Like a real water drop, it shows the world behind it upside down.
+  const ly = y + rad * 0.15
+  $('lensCircle').setAttribute('cx', x); $('lensCircle').setAttribute('cy', ly); $('lensCircle').setAttribute('r', rad * 0.8)
+  $('lensTint').setAttribute('cx', x); $('lensTint').setAttribute('cy', ly); $('lensTint').setAttribute('r', rad * 0.8)
+  $('lensView').setAttribute('transform', `translate(${x} ${ly}) scale(.07 -.07) translate(${-HER_CENTRE[0]} ${-HER_CENTRE[1]})`)
+  $('lens').style.opacity = S.seg(p, 0.4, 0.46)
+
+  // A gentle push-in for the rest, then the dive into the drop until it becomes the fall.
+  const k = S.lerp(1, 1.6, S.easeInOut(S.seg(p, 0.3, 0.5))) * S.lerp(1, 20, S.easeIn(S.seg(p, 0.5, 0.64)))
+  $('hisShine').style.opacity = 1 - S.seg(p, 0.5, 0.56)
+  $('world').setAttribute('transform', `translate(${x} ${ly}) scale(${k}) translate(${-x} ${-ly})`)
+  $('world').style.opacity = 1 - S.seg(p, 0.6, 0.66)
+  $('fall').style.opacity = S.seg(p, 0.6, 0.66)
+  if (p > 0.58) S.renderFall(fall, S.seg(p, 0.6, 1))
+  document.body.style.background = S.mix(S.mix(S.NIGHT, '#1B0E2E', S.seg(p, 0.6, 0.7)), '#2B1240', S.seg(p, 0.7, 1))
+
+  S.renderLines(openLines, p)
+  S.renderLines(fallLines, p)
+  $('bar').style.transform = `scaleX(${p})`
+  S.caption(p, CAPTIONS, $('cap'))
+}
+
+const reframe = () => S.frame($('svg'), 520)
+reframe()
+addEventListener('resize', reframe)
+S.run({ render, duration: 50000 })
+</script>
+</body>
+</html>

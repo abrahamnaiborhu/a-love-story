@@ -1,0 +1,404 @@
+{
+  "street-landscape": {
+    "width": 1536,
+    "height": 1024,
+    "sizes": {
+      "1024": 35804,
+      "1536": 54779
+    }
+  },
+  "street-portrait": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "640": 34984,
+      "1024": 59342
+    }
+  },
+  "him-walking": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "512": 21697,
+      "1024": 44519
+    }
+  },
+  "him": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "512": 20601,
+      "1024": 42211
+    }
+  },
+  "her": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "512": 21170,
+      "1024": 47336
+    }
+  },
+  "umbrella-open": {
+    "width": 1254,
+    "height": 1254,
+    "sizes": {
+      "640": 36901,
+      "1254": 104793
+    }
+  },
+  "umbrella-closed": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "512": 16196,
+      "1024": 46865
+    }
+  },
+  "her-rose-bud": {
+    "width": 1254,
+    "height": 1254,
+    "sizes": {
+      "640": 43060,
+      "1254": 121145
+    }
+  },
+  "her-rose-opening": {
+    "width": 1254,
+    "height": 1254,
+    "sizes": {
+      "640": 51700,
+      "1254": 141495
+    }
+  },
+  "her-rose-full": {
+    "width": 1254,
+    "height": 1254,
+    "sizes": {
+      "640": 54819,
+      "1254": 154879
+    }
+  },
+  "drop-clear": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "160": 4121,
+      "320": 10950
+    }
+  },
+  "drop-blue": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "160": 4334,
+      "320": 11536
+    }
+  },
+  "drop-painted": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "160": 4119,
+      "320": 9593
+    }
+  },
+  "inside-open": {
+    "width": 1254,
+    "height": 1254,
+    "sizes": {
+      "768": 74410,
+      "1254": 161424
+    }
+  },
+  "inside-closing": {
+    "width": 1254,
+    "height": 1254,
+    "sizes": {
+      "768": 71032,
+      "1254": 154783
+    }
+  },
+  "her-rose-curling": {
+    "width": 1254,
+    "height": 1254,
+    "sizes": {
+      "640": 59034,
+      "1254": 172348
+    }
+  },
+  "her-strong": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "512": 16193,
+      "1024": 34626
+    }
+  },
+  "bare-stem": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "512": 35013,
+      "1024": 78723
+    }
+  },
+  "her-leaving": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "512": 20063,
+      "1024": 42963
+    }
+  },
+  "water-cup": {
+    "width": 1254,
+    "height": 1254,
+    "sizes": {
+      "256": 5836,
+      "512": 16302
+    }
+  },
+  "bead-red": {
+    "width": 1254,
+    "height": 1254,
+    "sizes": {
+      "128": 2158,
+      "256": 3782
+    }
+  },
+  "bead-grey": {
+    "width": 1254,
+    "height": 1254,
+    "sizes": {
+      "128": 1919,
+      "256": 3079
+    }
+  },
+  "drop-grey-falling": {
+    "width": 1024,
+    "height": 1536,
+    "sizes": {
+      "128": 2079,
+      "256": 3704
+    }
+  },
+  "red-bleed": {
+    "width": 1536,
+    "height": 1024,
+    "sizes": {
+      "768": 43698,
+      "1536": 105587
+    }
+  },
+  "bud-1": {
+    "width": 279,
+    "height": 384,
+    "sizes": {
+      "279": 18705
+    }
+  },
+  "bud-2": {
+    "width": 368,
+    "height": 384,
+    "sizes": {
+      "368": 18565
+    }
+  },
+  "bud-3": {
+    "width": 328,
+    "height": 384,
+    "sizes": {
+      "328": 18834
+    }
+  },
+  "bud-4": {
+    "width": 281,
+    "height": 384,
+    "sizes": {
+      "281": 16263
+    }
+  },
+  "half-1": {
+    "width": 382,
+    "height": 384,
+    "sizes": {
+      "382": 26865
+    }
+  },
+  "half-2": {
+    "width": 347,
+    "height": 384,
+    "sizes": {
+      "347": 21560
+    }
+  },
+  "half-3": {
+    "width": 371,
+    "height": 384,
+    "sizes": {
+      "371": 25617
+    }
+  },
+  "half-4": {
+    "width": 342,
+    "height": 384,
+    "sizes": {
+      "342": 22846
+    }
+  },
+  "bloom-1": {
+    "width": 384,
+    "height": 378,
+    "sizes": {
+      "384": 25607
+    }
+  },
+  "bloom-2": {
+    "width": 384,
+    "height": 369,
+    "sizes": {
+      "384": 26891
+    }
+  },
+  "bloom-3": {
+    "width": 384,
+    "height": 378,
+    "sizes": {
+      "384": 27131
+    }
+  },
+  "bloom-4": {
+    "width": 384,
+    "height": 379,
+    "sizes": {
+      "384": 26476
+    }
+  },
+  "petal-1": {
+    "width": 192,
+    "height": 157,
+    "sizes": {
+      "192": 6373
+    }
+  },
+  "petal-2": {
+    "width": 192,
+    "height": 159,
+    "sizes": {
+      "192": 6066
+    }
+  },
+  "petal-3": {
+    "width": 192,
+    "height": 165,
+    "sizes": {
+      "192": 6589
+    }
+  },
+  "petal-4": {
+    "width": 166,
+    "height": 192,
+    "sizes": {
+      "166": 5057
+    }
+  },
+  "petal-5": {
+    "width": 192,
+    "height": 176,
+    "sizes": {
+      "192": 7699
+    }
+  },
+  "petal-6": {
+    "width": 192,
+    "height": 189,
+    "sizes": {
+      "192": 6149
+    }
+  },
+  "petal-7": {
+    "width": 192,
+    "height": 174,
+    "sizes": {
+      "192": 6497
+    }
+  },
+  "petal-8": {
+    "width": 192,
+    "height": 172,
+    "sizes": {
+      "192": 6915
+    }
+  },
+  "petal-9": {
+    "width": 185,
+    "height": 192,
+    "sizes": {
+      "185": 6460
+    }
+  },
+  "torn-1": {
+    "width": 256,
+    "height": 225,
+    "sizes": {
+      "256": 10592
+    }
+  },
+  "torn-2": {
+    "width": 256,
+    "height": 175,
+    "sizes": {
+      "256": 7861
+    }
+  },
+  "torn-3": {
+    "width": 256,
+    "height": 217,
+    "sizes": {
+      "256": 9592
+    }
+  },
+  "torn-4": {
+    "width": 256,
+    "height": 228,
+    "sizes": {
+      "256": 9806
+    }
+  },
+  "torn-5": {
+    "width": 256,
+    "height": 256,
+    "sizes": {
+      "256": 10098
+    }
+  },
+  "torn-6": {
+    "width": 256,
+    "height": 228,
+    "sizes": {
+      "256": 9347
+    }
+  },
+  "torn-7": {
+    "width": 256,
+    "height": 248,
+    "sizes": {
+      "256": 11935
+    }
+  },
+  "torn-8": {
+    "width": 256,
+    "height": 205,
+    "sizes": {
+      "256": 10014
+    }
+  },
+  "torn-9": {
+    "width": 256,
+    "height": 242,
+    "sizes": {
+      "256": 9485
+    }
+  }
+}

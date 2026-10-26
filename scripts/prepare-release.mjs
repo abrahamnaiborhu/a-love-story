@@ -1,5 +1,5 @@
 // Prepares the folder that gets published to the public GitHub Pages repository (see docs/DEPLOY.md).
-// Run with `npm run release`, which builds first. Copies dist/ to release/a-love-story/, adds .nojekyll,
+// Run with `npm run release`, which builds first; the Publish workflow runs it on every push to main. Copies dist/ to release/a-love-story/, adds .nojekyll,
 // and refuses to finish if anything private slipped into the build: prompts, internal notes, local paths,
 // source maps, key-like strings, or a page that isn't built for the /a-love-story/ address.
 import { cp, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
@@ -61,4 +61,4 @@ await writeFile(path.join(OUT, '.nojekyll'), '') // serve files exactly as built
 
 console.log(`Ready to publish: release/a-love-story/ (${list.length} files, ${(bytes / 1024 / 1024).toFixed(1)} MB)`)
 console.log('Checked: file types, source maps, local paths, prompts and notes, key-like strings, base path.')
-console.log('Next: copy it into your public repository clone (docs/DEPLOY.md, "Each release").')
+console.log('Next: push to main; the Publish workflow runs these same checks and publishes (docs/DEPLOY.md, "Each release").')

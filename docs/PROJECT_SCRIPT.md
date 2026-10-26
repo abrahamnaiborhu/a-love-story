@@ -52,6 +52,7 @@ Version / date: v0.1 — 2026-10-24
   - README replaced with a project README.
   - PRODUCTION_PLAN §10 D1–D3 ticked, except the remote-history review (the client creates the repositories).
   - The GitHub username is still assumed to be `abrahamnaiborhu` (unconfirmed).
+- **Publishing automated (2026-10-26, client: "can you please set the action? so when i push to github it works?"):** `.github/workflows/publish.yml`. Each push to `main` of the private source builds, lints and runs the release checks, then pushes only the build to the public `a-love-story` with a deploy key (secret `SITE_DEPLOY_KEY`). Two repositories are kept because free-plan Pages can't serve a private repository. `docs/DEPLOY.md` rewritten around it (key setup, first push, Pages after the first publish, rollback by reverting in the source, a by-hand fallback); `.gitignore` also guards the key files. Tested locally (clean-copy build, publish step against a stand-in repository); the first real run happens on the client's first push. Nothing committed, pushed or published by the director.
 - **Soundtrack (client, 2026-10-26):** "soundtrack would be for later": not part of the first release.
 - **Sprint 4 build result (2026-10-26), awaiting the client's device checks and final review:**
   - **Pacing:** five holds where the story stands still while scrolling continues: ch1 drop and lines +0.5; ch2 "We." +0.4; ch3 walls +0.3; ch5 bare stem after her last line +0.6 (the longest rest); ch6 "Mr. Nobody" +0.7. The film is 25 story screens plus 2.5 screens of holds; Play takes 240 s.

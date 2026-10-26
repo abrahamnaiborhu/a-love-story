@@ -11,6 +11,7 @@
 *.key
 *.p12
 .npmrc
+a-love-story-deploy*
 
 # ---- Generated: rebuilt by npm, Vite or the release script ----
 node_modules
